@@ -47,62 +47,56 @@
                     <h5 class="card-title">1. Develop a C# program to simulate a simple arithmetic calculator </h5>
                     <pre><code class="csharp" id="program1">
                       
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+set ns [new Simulator]
 
-namespace ConsoleApplication2
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            int a = 1;
-            while (a == 1)
-            {
-                Console.Write("Enter the first number: ");
-                double num1 = Convert.ToDouble(Console.ReadLine());
+settracefile [open s1.tr w]
+$ns trace-all $tracefile
 
-                Console.Write("Enter the second number: ");
-                double num2 = Convert.ToDouble(Console.ReadLine());
+setnamfile [open s1.nam w]
+$ns namtrace-all $namfile
 
-                Console.Write("Enter the operator (+, -, *, /, %): ");
-                char op = Convert.ToChar(Console.ReadLine());
+proc finish {} {
+global ns tracefilenamfile
+$ns flush-trace
 
-                double result = 0;
+close $tracefile
+close $namfile
 
-                switch (op)
-                {
-                    case '+':
-                        result = num1 + num2;
-                        break;
-                    case '-':
-                        result = num1 - num2;
-                        break;
-                    case '*':
-                        result = num1 * num2;
-                        break;
-                    case '/':
-                        result = num1 / num2;
-                        break;
-                    case '%':
-                        result = num1 % num2;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid operator!");
-                        break;
-                }
+execnam s1.nam &
 
-                Console.WriteLine("{0} {1} {2} = {3}", num1, op, num2, result);
-
-                Console.Write("If you want to continue, enter 1; otherwise, enter 0: ");
-                a = Convert.ToInt32(Console.ReadLine());
-            }
-        }
-    }
+execawk -f s1.awk s1.tr &
+exit 0
 }
+
+set n0 [$ns node]
+set n1 [$ns node]
+set n2 [$ns node]
+
+$n0 label "TCPSource"
+$n2 label "TCPSink"
+
+$ns color 1 red
+
+$ns duplex-link $n0 $n1 1Mb 10ms DropTail
+$ns duplex-link $n1 $n2 1Mb 10ms DropTail
+
+$ns queue-limit $n1 $n2 5
+
+settcp [new Agent/TCP]
+$ns attach-agent $n0 $tcp
+
+settcpsink [new Agent/TCPSink]
+$ns attach-agent $n2 $tcpsink
+
+set ftp [new Application/FTP]
+$ftp attach-agent $tcp
+$ns connect $tcp $tcpsink
+$tcp set class_ 1
+$ns at 0.2 "$ftp start"
+$ns at 2.5 "$ftp stop"
+$ns at 3.0 "finish"
+$ns run
+
                         
                     
                     </code></pre>
