@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>C# Lab Programs</title>
+    <title>CN Programs</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome CSS for icons -->
@@ -23,11 +23,13 @@
   
     <h1>Program Index</h1>
         <ol id="index">
-          <li><a href="#program1">Program 1</a></li>
+          <li><a href="#program1">1.Simulate a three nodes point – to – point network with duplex links between them.Set the
+queue size and vary the bandwidth and find the number of packets dropped.</a></li>
           <li><a href="#program2">2. Simulate simple ESS and with transmitting nodes in wire-less LAN by simulation and
 determine the performance with respect to transmission of packets.</a></li>
-          <li><a href="#program3">Program 3</a></li>
-          <li><a href="#program4">Program 4</a></li>
+          <li><a href="#program3">3.Write a program for error detecting code using CRC-CCITT (16- bits).</a></li>
+          <li><a href="#program4">4.Write a program to find the shortest path between vertices using bellman-ford
+algorithm.</a></li>
           <li><a href="#program5">Program 5</a></li>
           <li><a href="#program6">Program 6</a></li>
           <li><a href="#program7">Program 7</a></li>
@@ -45,7 +47,8 @@ determine the performance with respect to transmission of packets.</a></li>
             <div class="card program-card">
                 <i class="fas fa-copy copy-icon" onclick="copyToClipboard('program1')"></i>
                 <div class="card-body">
-                    <h5 class="card-title">1. Develop a C# program to simulate a simple arithmetic calculator </h5>
+                    <h5 class="card-title">1.Simulate a three nodes point – to – point network with duplex links between them.Set the
+queue size and vary the bandwidth and find the number of packets dropped.</h5>
                     <pre><code class="csharp" id="program1">
                       
 set ns [new Simulator]
@@ -207,7 +210,7 @@ $ns run
             <div class="card program-card">
                 <i class="fas fa-copy copy-icon" onclick="copyToClipboard('program3')"></i>
                 <div class="card-body">
-                    <h5 class="card-title">3. Develop a C# program to list all substrings in a given string. [Hint: use of Substring() method]</h5>
+                    <h5 class="card-title">3. Write a program for error detecting code using CRC-CCITT (16- bits).</h5>
                     <pre><code class="csharp" id="program3">
 set ns [new Simulator]
 setnamfile [open s3.nam w]
@@ -288,7 +291,8 @@ $ns run
             <div class="card program-card">
                 <i class="fas fa-copy copy-icon" onclick="copyToClipboard('program4')"></i>
                 <div class="card-body">
-                    <h5 class="card-title">4. Develop a C# program to demonstrate Division by Zero and Index Out of Range exceptions.</h5>
+                    <h5 class="card-title">4.Write a program to find the shortest path between vertices using bellman-ford
+algorithm.</h5>
                     <pre><code class="csharp" id="program4">
 importjava.util.*;
 public class BellmanDemoFinal
@@ -503,41 +507,76 @@ namespace ConsoleApplication2
             <div class="card program-card">
                 <i class="fas fa-copy copy-icon" onclick="copyToClipboard('program7')"></i>
                 <div class="card-body">
-                    <h5 class="card-title">7. copy files</h5>
+                    <h5 class="card-title">4.Simulate an Ethernet LAN using n nodes and set multiple traffic nodes and plot
+congestion window for different source / destination.</h5>
                     <pre><code class="csharp" id="program7">
-                      using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-namespace lab_program6
-{
-internal class Program
-{
-static void Main(string[] args)
-{
-string sourceFilePath =
-&quot;D:\\madhvavadiraja_2023_odd\\c#\\programs\\lab_program6\\source.txt&quot;;
-string destinationFilePath =
-&quot;D:\\madhvavadiraja_2023_odd\\c#\\programs\\lab_program6\\destination.txt&quot;;
-try
-{
-// Read the contents of the source file
-string fileContents = File.ReadAllText(sourceFilePath);
-// Write the contents to the destination file
-File.WriteAllText(destinationFilePath, fileContents);
-Console.WriteLine(&quot;File copied successfully!&quot;);
-Console.ReadKey();
+                    
+set ns [new Simulator]
+setnamfile [open s3.nam w]
+$ns namtrace-all $namfile
+settracefile [open s3.tr w]
+$ns trace-all $tracefile
+proc finish {} {
+global ns namfiletracefile
+$ns flush-trace
+close $namfile
+close $tracefile
+execnam s3.nam &
+exit 0
 }
-catch (Exception ex)
-{
-Console.WriteLine(&quot;Error: &quot; + ex.Message);
-Console.ReadKey();
-}
-}
-}
-}
+set n0 [$ns node]
+set n1 [$ns node]
+set n2 [$ns node]
+set n3 [$ns node]
+set n4 [$ns node]
+set n5 [$ns node]
+set n6 [$ns node]
+set n7 [$ns node]
+set n8 [$ns node]
+$ns color 1 Blue
+$ns color 2 Red
+$n7 shape box
+$n7 color Blue
+$n8 shape hexagon
+$n8 color Red
+$ns duplex-link $n1 $n0 2Mb 10ms DropTail
+$ns duplex-link $n2 $n0 2Mb 10ms DropTail
+$ns duplex-link $n0 $n3 1Mb 20ms DropTail
+$ns make-lan "$n3 $n4 $n5 $n6 $n7 $n8" 512Kb 40ms LL Queue/DropTail Mac/802_3
+$ns duplex-link-op $n1 $n0 orient right-down
+$ns duplex-link-op $n2 $n0 orient right-up
+$ns duplex-link-op $n0 $n3 orient right
+$ns queue-limit $n0 $n3 20
+set tcp1 [new Agent/TCP/Vegas]
+$ns attach-agent $n1 $tcp1
+set sink1 [new Agent/TCPSink]
+$ns attach-agent $n7 $sink1
+set ftp1 [new Application/FTP]
+$ftp1 attach-agent $tcp1
+$ns connect $tcp1 $sink1
+$tcp1 set class_ 1
+$tcp1 set packetSize_ 55
+set tfile1 [open cwnd1.tr w]
+$tcp1 attach $tfile1
+$tcp1 trace cwnd_
+set tcp2 [new Agent/TCP/Reno]
+$ns attach-agent $n2 $tcp2
+set sink2 [new Agent/TCPSink]
+$ns attach-agent $n8 $sink2
+set ftp2 [new Application/FTP]
+$ftp2 attach-agent $tcp2
+$ns connect $tcp2 $sink2
+$tcp2 set class_ 2
+$tcp2 set packetSize_ 55
+set tfile2 [open cwnd2.tr w]
+$tcp2 attach $tfile2
+$tcp2 trace cwnd_
+$ns at 0.5 "$ftp1 start"
+$ns at 1.0 "$ftp2 start"
+$ns at 5.0 "$ftp2 stop"
+$ns at 5.0 "$ftp1 stop"
+$ns at 5.5 "finish"
+$ns run                        
                     </code></pre>
                 </div>
             </div>
