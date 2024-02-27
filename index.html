@@ -290,59 +290,72 @@ $ns run
                 <div class="card-body">
                     <h5 class="card-title">4. Develop a C# program to demonstrate Division by Zero and Index Out of Range exceptions.</h5>
                     <pre><code class="csharp" id="program4">
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleApplication2
+importjava.util.*;
+public class BellmanDemoFinal
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-           
- {
-
-int[] numbers = { 10, 20, 30, 40, 50 };
-
-int result = 0;
-
-try
- {
-
- Console.Write("Enter a number to divide by: ");
-int divisor = int.Parse(Console.ReadLine());
- result = numbers[0] / divisor;
-
- Console.WriteLine("The sixth element of the array is: " + numbers[5]);
- }
-
-catch (DivideByZeroException ex)
- {
-
- Console.WriteLine("Division by zero exception: " + ex.Message);
- }
-
-catch (IndexOutOfRangeException ex)
- {
-
-
- Console.WriteLine("Index out of range exception: " + ex.Message);
- }
-
-finally
- {
-
- Console.WriteLine("The result of the division is: " + result);
- }
-Console.ReadLine();
- }
+static Scanner in = new Scanner(System.in);
+public static void main(String [] args)
+{
+int V,E=1,chckNegative=0;
+int w[][] = new int [20][20];
+int edge[][] = new int [50][2];
+System.out.println("Enter the no of vertices ");
+V = in.nextInt();
+System.out.println("Enter the weight matrix");
+for(inti=1;i<=V;i++)
+for(int j=1;j<=V;j++)
+{
+w[i][j] = in.nextInt();
+if(w[i][j]!=0)
+{ edge[E][0]=i;
+edge[E++][1]=j;
 }
-        }
-    }
-
+}
+chckNegative = bellmanFord(w,V,E,edge);
+if(chckNegative == 1)
+System.out.println("\nNo negative weight cycle\n");
+else
+System.out.println("\nNegative weight cycle exists\n");
+}
+public static intbellmanFord(int w[][],intV,intE,int edge[][])
+{
+intu,v,S,flag=1;
+int distance [] = new int[20];
+int parent [] = new int [20];
+for(inti=1;i<=V;i++)
+{
+distance[i] = 999;
+parent[i]=-1;
+}
+System.out.println("Enter the source vertex");
+S = in.nextInt();
+distance[S]=0;
+for(inti=1;i<=V-1;i++)
+{
+for(int k=1;k<=E;k++)
+{
+u = edge[k][0];
+v = edge[k][1] ;
+if(distance[u]+w[u][v] < distance[v])
+{
+distance[v] = distance[u] + w[u][v] ;
+parent[v]=u ;
+}
+}
+}
+ for(int k=1;k<=E;k++)
+{
+u = edge[k][0] ;
+v = edge[k][1] ;
+if(distance[u]+w[u][v] < distance[v])
+flag = 0 ;
+}
+if(flag==1)
+for(inti=1;i<=V;i++)
+System.out.println("Vertex " + i + " -> cost = " + distance[i] + " parent = "+ (parent[i]));
+return flag;
+}
+}                          
                         
                     </code></pre>
                 </div>
