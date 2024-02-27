@@ -448,7 +448,8 @@ System.out.println("---------------------------------");
                 <div class="card-body">
                     <h5 class="card-title">6.Write a program for error detecting code using CRC-CCITT (16- bits).</h5>
                     <pre><code class="csharp" id="program6">
-importjava.util.Scanner;
+                        
+ importjava.util.Scanner;
 public class CRCDemo
 {
 static String msg;
@@ -473,7 +474,6 @@ t[x] = '0';
 System.out.println("Zero extended message is: "+ new String(t));
 crc(); 
 System.out.println("CheckSum is:" + new String(cs));
-
 for(x=mlen;x<mlen+glen-1;x++)
 t[x] = cs[x-mlen];
 System.out.println("Final codeword generated is:"+ new String(t));
@@ -521,6 +521,7 @@ for(c=1; c<glen; c++)
 cs[c] = ((cs[c]==g[c])? '0' : '1');
 }
 }
+
                     </code></pre>
                 </div>
             </div>
