@@ -342,8 +342,8 @@ for(int k=1;k<=E;k++)
 {
 u = edge[k][0];
 v = edge[k][1] ;
-if(distance[u]+w[u][v] < distance[v])
-{
+if(distance[u]+w[u][v] < distance[v] )   
+{  ////
 distance[v] = distance[u] + w[u][v] ;
 parent[v]=u ;
 }
@@ -352,8 +352,8 @@ parent[v]=u ;
  for(int k=1;k<=E;k++)
 {
 u = edge[k][0] ;
-v = edge[k][1] ;
-if(distance[u]+w[u][v] < distance[v])
+v = edge[k][1] ; 
+if(distance[u]+w[u][v] < distance[v])     ////
 flag = 0 ;
 }
 if(flag==1)
@@ -393,7 +393,7 @@ iter = in.nextInt();
 System.out.println("Enter the bucket size and output rate :");
 bcktsize = in.nextInt();
 oprate = in.nextInt();
-Random rand = new Random();
+Random rand = new Random();  
 for(int i=0;i<iter;i++)
 {
 System.out.println("Iteration: " + (i+1));
