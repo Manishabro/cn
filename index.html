@@ -27,11 +27,13 @@
 queue size and vary the bandwidth and find the number of packets dropped.</a></li>
           <li><a href="#program2">2. Simulate simple ESS and with transmitting nodes in wire-less LAN by simulation and
 determine the performance with respect to transmission of packets.</a></li>
-          <li><a href="#program3">3.Write a program for error detecting code using CRC-CCITT (16- bits).</a></li>
+          <li><a href="#program3">3.. Simulate an Ethernet LAN using n nodes and set multiple traffic nodes and plot
+congestion window for different source / destination.</a></li>
           <li><a href="#program4">4.Write a program to find the shortest path between vertices using bellman-ford
 algorithm.</a></li>
           <li><a href="#program5">5. Write a program for congestion control using leaky bucket algorithm.</a></li>
-          <li><a href="#program6">Program 6</a></li>
+          <li><a href="#program6">6. Simulate an Ethernet LAN using n nodes and set multiple traffic nodes and plot
+congestion window for different source / destination.</a></li>
           <li><a href="#program7">Program 7</a></li>
           <li><a href="#program8">Program 8</a></li>
           <li><a href="#program9">Program 9</a></li>
@@ -210,7 +212,8 @@ $ns run
             <div class="card program-card">
                 <i class="fas fa-copy copy-icon" onclick="copyToClipboard('program3')"></i>
                 <div class="card-body">
-                    <h5 class="card-title">3. Write a program for error detecting code using CRC-CCITT (16- bits).</h5>
+                    <h5 class="card-title">3. . Simulate an Ethernet LAN using n nodes and set multiple traffic nodes and plot
+congestion window for different source / destination.</h5>
                     <pre><code class="csharp" id="program3">
 set ns [new Simulator]
 setnamfile [open s3.nam w]
@@ -444,56 +447,80 @@ System.out.println("---------------------------------");
             <div class="card program-card">
                 <i class="fas fa-copy copy-icon" onclick="copyToClipboard('program6')"></i>
                 <div class="card-body">
-                    <h5 class="card-title">6. Develop a C# program to generate and print Floyd's Triangle using Jagged arrays.</h5>
+                    <h5 class="card-title">6.Write a program for error detecting code using CRC-CCITT (16- bits).</h5>
                     <pre><code class="csharp" id="program6">
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleApplication2
+importjava.util.Scanner;
+public class CRCDemo
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.Write("Enter the number of rows: ");
-            int rows = int.Parse(Console.ReadLine());
+static String msg;
+static String genPoly = "10001000000100001";
+static char t[] = new char[128]; 
+static char cs[] = new char[128]; 
+staticchar g[] = new char[128];
+staticintmlen,glen,x,c,flag=0,test;
+public static void main(String [] args)
+{
+Scanner in = new Scanner(System.in);
+System.out.println("Enter the message to be transferred");
+msg = in.nextLine();
+mlen = msg.length(); 
+for(inti=0;i<mlen;i++)
+t[i] = msg.charAt(i);
+System.out.println("Predefined Generator Polynomial is: " + genPoly);
+g = genPoly.toCharArray();
+glen = genPoly.length(); 
+for(x=mlen;x<(mlen+glen-1);x++)
+t[x] = '0';
+System.out.println("Zero extended message is: "+ new String(t));
+crc(); 
+System.out.println("CheckSum is:" + new String(cs));
 
-            int[][] triangle = new int[rows][];
-
-            int counter = 1;
-
-            for (int i = 0; i < rows; i++)
-            {
-
-                triangle[i] = new int[i + 1];
-
-                for (int j = 0; j < i + 1; j++)
-                {
-
-                    triangle[i][j] = counter;
-
-                    counter++;
-                }
-            }
-
-            Console.WriteLine("Floyd's Triangle:");
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < i + 1; j++)
-                {
-
-                    Console.Write(triangle[i][j] + " ");
-                }
-
-                Console.WriteLine();
-            }
-             Console.ReadLine();
-        }
-       
-    }
+for(x=mlen;x<mlen+glen-1;x++)
+t[x] = cs[x-mlen];
+System.out.println("Final codeword generated is:"+ new String(t));
+System.out.println("\n\nTest Error detection 1(yes) 0(no) ? : ");
+test = in.nextInt();
+if(test==1)
+{
+System.out.println("Enter position where error is to inserted : ");
+x = in.nextInt();
+t[x] = (t[x]=='0')?'1':'0';
+System.out.println("Errorneous data :"+ new String(t));
+}
+crc(); 
+for(x=0;x<(glen-1); x++)
+{
+if(cs[x] =='1')
+{
+flag =1;
+break;
+}
+}
+if(flag==1)
+System.out.println("Error was detected during transfer");
+else
+System.out.println("No Error Detected during transfer");
+}
+public static void crc()
+{
+for(x=0; x<glen; x++)
+cs[x] = t[x];
+do
+{
+if(cs[0] == '1')
+xor();
+for(c=0; c<glen-1; c++)
+{
+cs[c] = cs[c+1];
+}
+cs[c] = t[x++];
+}while(x<=mlen+glen-1);
+}
+public static void xor()
+{
+for(c=1; c<glen; c++)
+cs[c] = ((cs[c]==g[c])? '0' : '1');
+}
 }
                     </code></pre>
                 </div>
